@@ -2,11 +2,15 @@
 
 This is the changelog for RedLog a simple ledger application.
 
-## [0.1.2] - 2025-07-15
+## [0.1.2] - 2025-07-14
 
 ### Added
 
 - Added a command to generate monthly statements
+
+### Changed
+
+- Now the file location is not set
 
 ## [0.1.1] - 2025-07-14
 
