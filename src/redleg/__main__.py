@@ -14,9 +14,7 @@ __version__ = "0.1.1"
 
 # ? Constants
 # The format for the logging msg
-LOGGING_FORMAT = "%(asctime)s [%(levelname)s]: \"%(message)s\""
-# The format for the date in the logging message
-LOGGING_DATE_FORMAT = "%H:%M:%S"
+LOGGING_FORMAT = "[%(levelname)s]: \"%(message)s\""
 # The accepted date format
 DATE_FORMAT = "%d-%m-%Y"
 # Account name pattern
@@ -75,7 +73,7 @@ args = parser.parse_args()
 # Get the logger for the module
 logger = logging.getLogger(__name__)
 # Set up the formatter object
-formatter = logging.Formatter(fmt=LOGGING_FORMAT, datefmt=LOGGING_DATE_FORMAT)
+formatter = logging.Formatter(fmt=LOGGING_FORMAT)
 # Set up console handler
 streamHandler = logging.StreamHandler()
 # Set the formatter for the console handler
@@ -93,6 +91,103 @@ else:
     logger.setLevel(0)  # Notset
 
 
+def registerFunc(account_data: dict) -> str:
+    # Iterate over the transactions
+    ledger = ""
+    for transaction in account_data['transactions']:
+        ledger += f"Date: {transaction['date']}\n"
+        ledger += f"Description: {transaction['description']}\n"
+        ledger += "Accounts: \n"
+        # Iterate over the accounts
+        for accounts in transaction['accounts']:
+            ledger += f"\t{accounts}: {transaction['accounts'][accounts]}\n"
+        # Print the transaction
+        ledger += "\n"
+
+    return ledger
+
+
+def transactionFunc(account_data: dict):
+    # Set up accounts dict
+    accounts = {}
+    # Get the date
+    date = input("Date (dd-mm-YY): ")
+    try:
+        # Sett if date adheres to the date format
+        datetime.strptime(date, DATE_FORMAT)
+    except ValueError:
+        logger.error(
+            "Date does not conform to date format: %s", DATE_FORMAT
+        )
+        return 1
+    description = input("Input transaction description: ")
+    get_accounts = True
+    while get_accounts:
+        # Get account
+        name = input("Account name: ")
+        # If equal to DONE the return
+        if name == "DONE":
+            get_accounts = False
+            break
+        # Make sure it matches name pattern
+        if not NAME_PATTERN.match(name):
+            logger.error("Name does not conform to naming conventions")
+            return 1
+        # Make sure account not already used during this transaction
+        if name in accounts:
+            logger.error("You input an account twice")
+            return 1
+        try:
+            # Get change in value
+            accounts[name] = int(input("Amount: "))
+        except ValueError:
+            logger.error("You inputted a non int as a number.")
+            return 1
+    transaction_balance = 0
+    for account, amount in accounts.items():
+        transaction_balance += amount
+    if transaction_balance != 0:
+        logger.error("The transaction does not balance out.")
+        return 1
+    # Append the transaction to the ledger
+    account_data['transactions'].append(
+        {
+            "date": date,
+            "description": description,
+            "accounts": accounts
+        }
+    )
+    # Open the file
+    with open(ACCOUNT_FILE, "w", encoding="utf-8") as account_file:
+        # Write the json
+        json.dump(
+            account_data,  # The ledger data
+            account_file,  # The ledger file
+            indent=4  # Indent 4 spaces, nice thing to have
+        )
+
+
+def accountsFunc(account_data: dict) -> str:
+    # Set up balances dict
+    balances = {}
+    # Iterate over all the transactions
+    for transaction in account_data['transactions']:
+        # Iterate over all the accounts
+        for account in transaction['accounts']:
+            # Add the amount to the amount in balances
+            if account in balances:
+                balances[account] += transaction['accounts'][account]
+            else:
+                balances[account] = transaction['accounts'][account]
+    accounts = ""
+    # Iterate over all the accounts in balances
+    for account, balance in balances.items():
+        # Print the account name and the balance
+        accounts += f"{account}: {balance}\n"
+
+    return accounts
+
+
 def main() -> int:
     """All application function code
 
@@ -107,93 +202,13 @@ def main() -> int:
             account_data = json.load(account_file)
         # Command register
         if args.command == "register":
-            # Iterate over the transactions
-            for transaction in account_data['transactions']:
-                transactions = ""
-                # Iterate over the accounts
-                for accounts in transaction['accounts']:
-                    transactions += f"\t{accounts}: {transaction['accounts'][accounts]}\n"
-                # Print the transaction
-                print(f"Date: {transaction['date']}")
-                print(f"Description: {transaction['description']}")
-                print("Accounts:")
-                print(transactions)
+            print(registerFunc(account_data))
         # Command transaction
         elif args.command == "transaction":
-            # Set up accounts dict
-            accounts = {}
-            # Get the date
-            date = input("Date (dd-mm-YY): ")
-            try:
-                # Sett if date adheres to the date format
-                datetime.strptime(date, DATE_FORMAT)
-            except ValueError:
-                logger.error(
-                    "Date does not conform to date format: %s", DATE_FORMAT
-                )
-                return 1
-            description = input("Input transaction description: ")
-            get_accounts = True
-            while get_accounts:
-                # Get account
-                name = input("Account name: ")
-                # If equal to DONE the return
-                if name == "DONE":
-                    get_accounts = False
-                    break
-                # Make sure it matches name pattern
-                if not NAME_PATTERN.match(name):
-                    logger.error("Name does not conform to naming conventions")
-                    return 1
-                # Make sure account not already used during this transaction
-                if name in accounts:
-                    logger.error("You input an account twice")
-                    return 1
-                try:
-                    # Get change in value
-                    accounts[name] = int(input("Amount: "))
-                except ValueError:
-                    logger.error("You inputted a non int as a number.")
-                    return 1
-            transaction_balance = 0
-            for account in accounts:
-                transaction_balance += accounts[account]
-            if transaction_balance != 0:
-                logger.error("The transaction does not balance out.")
-                return 1
-            # Append the transaction to the ledger
-            account_data['transactions'].append(
-                {
-                    "date": date,
-                    "description": description,
-                    "accounts": accounts
-                }
-            )
-            # Open the file
-            with open(ACCOUNT_FILE, "w", encoding="utf-8") as account_file:
-                # Write the json
-                json.dump(
-                    account_data,  # The ledger data
-                    account_file,  # The ledger file
-                    indent=4  # Indent 4 spaces, nice thing to have
-                )
+            transactionFunc(account_data)
         # Command accounts
         elif args.command == "accounts":
-            # Set up balances dict
-            balances = {}
-            # Iterate over all the transactions
-            for transaction in account_data['transactions']:
-                # Iterate over all the accounts
-                for account in transaction['accounts']:
-                    # Add the amount to the amount in balances
-                    if account in balances:
-                        balances[account] += transaction['accounts'][account]
-                    else:
-                        balances[account] = transaction['accounts'][account]
-            # Iterate over all the accounts in balances
-            for account, balance in balances.items():
-                # Print the account name and the balance
-                print(f"{account}: {balance}")
+            print(accountsFunc(account_data))
     # In case the file does not exist
     except FileNotFoundError:
         logger.critical("File: %s not found.", ACCOUNT_FILE)

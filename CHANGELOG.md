@@ -6,7 +6,7 @@ This is the changelog for RedLog a simple ledger application.
 
 ### Changed
 
-- Changed the logging date format
+- Changed the logging format
 
 ## [0.1.0] - 2025-07-13
 
