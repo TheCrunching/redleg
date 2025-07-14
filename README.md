@@ -34,6 +34,7 @@ options:
 | 0    | Successful |
 | 1    | Error |
 | 2    | Argparse error |
+| 3    | Ctrl+C |
 
 ## FAQ
 

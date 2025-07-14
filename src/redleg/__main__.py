@@ -10,7 +10,7 @@ from pathlib import Path
 from datetime import datetime
 
 
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 
 # ? Constants
 # The format for the logging msg
@@ -65,6 +65,10 @@ transactionCommand = subparsers.add_parser(
 accountCommand = subparsers.add_parser(
     "accounts",
     help="Print the value of all accounts"
+)
+statementCommand = subparsers.add_parser(
+    "statement",
+    help="Prints out a statement"
 )
 
 # Parse the arguments
@@ -205,6 +209,44 @@ def accounts_func(account_data: dict) -> str:
     return accounts
 
 
+def statement_func(period, account_data: str) -> str:
+    try:
+        # Sett if date adheres to the date format
+        datetime.strptime(period, "%Y-%m")
+    except ValueError:
+        logger.error(
+            "Date does not conform to date format: YY-mm"
+        )
+        return 1
+
+    accounts = {}
+    statement = ""
+
+    for transaction in account_data['transactions']:
+        if transaction['date'].startswith(period):
+            statement += f"Date: {transaction['date']}\n"
+            statement += f"Description: {transaction['description']}\n"
+            statement += "Accounts:\n"
+            for account, amount in transaction['accounts'].items():
+                try:
+                    accounts[account][1] += amount
+                except KeyError:
+                    accounts[account] = []
+                    accounts[account].append(amount)
+                    accounts[account].append(amount)
+                statement += f"\t{account}: {amount}\n"
+
+    statement += "\n\n"
+    statement += "=====START=====\n"
+    for account, amount in accounts.items():
+        statement += f"\t{account}: {amount[0]}\n"
+    statement += "=====END=====\n"
+    for account, amount in accounts.items():
+        statement += f"\t{account}: {amount[1]}\n"
+
+    return statement
+
+
 def main() -> int:
     """All application function code
 
@@ -226,6 +268,17 @@ def main() -> int:
         # Command accounts
         elif args.command == "accounts":
             print(accounts_func(account_data))
+        # Command statement
+        elif args.command == "statement":
+            period = input("Please input a period you want to generate a statement for (YY-mm): ")
+            statement = statement_func(period, account_data)
+            print(statement)
+            if input("Save to file? [y/N]: ") == "Y":
+                with open(f"statement-{period}.txt", mode="w", encoding="utf-8") as statement_file:
+                    statement_file.write(statement)
+                logger.info("Statement saved successfully")
+            else:
+                logger.info("Not saving to file")
     # In case the file does not exist
     except FileNotFoundError:
         logger.critical("File: %s not found.", ACCOUNT_FILE)
@@ -240,6 +293,9 @@ def main() -> int:
             json.dump(empty_ledger, account_file)
         logger.info("Created an empty ledger file")
     # In case a name is missing in the json file
+    except KeyboardInterrupt:
+        print("\nCtrl+C pressed, quiting...")
+        return 3
 
     return 0  # Success
 
