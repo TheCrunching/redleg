@@ -4,9 +4,14 @@ This is the changelog for RedLog a simple ledger application.
 
 ## [0.1.1] - 2025-07-14
 
+### Fixed
+
+- Fixed how I implemented the account equation
+
 ### Changed
 
 - Changed the logging format
+- Changed the date format
 
 ## [0.1.0] - 2025-07-13
 

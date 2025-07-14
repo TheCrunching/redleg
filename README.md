@@ -5,7 +5,7 @@ RedLeg is a simple dual entry ledger program.
 ## Usage
 
 ```terminal
-$ redleg
+$ redleg -h
 usage: RedLeg [-h] [--version] [-v {0,1,2}]
               {register,transaction,accounts} ...
 
@@ -13,9 +13,9 @@ The simple ledger application
 
 positional arguments:
   {register,transaction,accounts}
-    register            Prints the register 'RedLeg register -h'
-    transaction         Make a transaction 'RedLeg transaction -h)
-    accounts            Print the value of all accounts 'RedLeg accounts -h'
+    register            Prints the register
+    transaction         Make a transaction
+    accounts            Print the value of all accounts
 
 options:
   -h, --help            show this help message and exit
@@ -42,4 +42,4 @@ The reasoning behind this is that you might record a transaction a day or two af
 
 ### What is the date format?
 
-dd-mm-YY
+YY-mm-dd

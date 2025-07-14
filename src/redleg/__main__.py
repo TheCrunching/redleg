@@ -16,10 +16,10 @@ __version__ = "0.1.1"
 # The format for the logging msg
 LOGGING_FORMAT = "[%(levelname)s]: \"%(message)s\""
 # The accepted date format
-DATE_FORMAT = "%d-%m-%Y"
+DATE_FORMAT = "%Y-%m-%d"
 # Account name pattern
 NAME_PATTERN = re.compile(r"^(Assets|Liabilities|Equity|Revenue|Expenses).")
-# Account dir0
+# Accounting dir
 ACCOUNT_FILE_DIR = Path(Path.home(), ".redleg")
 # Check if dir exists
 if not ACCOUNT_FILE_DIR.exists():
@@ -82,16 +82,15 @@ streamHandler.setFormatter(formatter)
 logger.addHandler(streamHandler)
 # Set logging level
 if args.verbose == 0:
-    logger.setLevel(30)  # Warning
-elif args.verbose == 1:
     logger.setLevel(20)  # Info
-elif args.verbose == 2:
+elif args.verbose == 1:
     logger.setLevel(10)  # Debug
 else:
     logger.setLevel(0)  # Notset
 
 
-def registerFunc(account_data: dict) -> str:
+def register_func(account_data: dict) -> str:
+    """Print all transactions"""
     # Iterate over the transactions
     ledger = ""
     for transaction in account_data['transactions']:
@@ -107,11 +106,12 @@ def registerFunc(account_data: dict) -> str:
     return ledger
 
 
-def transactionFunc(account_data: dict):
+def transaction_func(account_data: dict) -> int:
+    """Adds a new transaction"""
     # Set up accounts dict
     accounts = {}
     # Get the date
-    date = input("Date (dd-mm-YY): ")
+    date = input("Date (YY-mm-dd): ")
     try:
         # Sett if date adheres to the date format
         datetime.strptime(date, DATE_FORMAT)
@@ -125,8 +125,8 @@ def transactionFunc(account_data: dict):
     while get_accounts:
         # Get account
         name = input("Account name: ")
-        # If equal to DONE the return
-        if name == "DONE":
+        # If enter pressed then break
+        if name == "":
             get_accounts = False
             break
         # Make sure it matches name pattern
@@ -143,10 +143,16 @@ def transactionFunc(account_data: dict):
         except ValueError:
             logger.error("You inputted a non int as a number.")
             return 1
-    transaction_balance = 0
+    assets = 0
+    liabilities = 0
     for account, amount in accounts.items():
-        transaction_balance += amount
-    if transaction_balance != 0:
+        if re.compile(r"^Assets.").match(account):
+            assets += amount
+        elif re.compile(r"^Expenses.").match(account):
+            liabilities -= amount
+        else:
+            liabilities += amount
+    if assets != liabilities:
         logger.error("The transaction does not balance out.")
         return 1
     # Append the transaction to the ledger
@@ -167,7 +173,8 @@ def transactionFunc(account_data: dict):
         )
 
 
-def accountsFunc(account_data: dict) -> str:
+def accounts_func(account_data: dict) -> str:
+    """Run the account command"""
     # Set up balances dict
     balances = {}
     # Iterate over all the transactions
@@ -181,9 +188,19 @@ def accountsFunc(account_data: dict) -> str:
                 balances[account] = transaction['accounts'][account]
     accounts = ""
     # Iterate over all the accounts in balances
+    assets = 0
+    liabilities = 0
     for account, balance in balances.items():
         # Print the account name and the balance
         accounts += f"{account}: {balance}\n"
+        if re.compile(r"^Assets.").match(account):
+            assets += balance
+        elif re.compile(r"^Expenses.").match(account):
+            liabilities -= balance
+        else:
+            liabilities += balance
+    if assets != liabilities:
+        logger.warning("Your accounts do not balance out.")
 
     return accounts
 
@@ -202,13 +219,13 @@ def main() -> int:
             account_data = json.load(account_file)
         # Command register
         if args.command == "register":
-            print(registerFunc(account_data))
+            print(register_func(account_data))
         # Command transaction
         elif args.command == "transaction":
-            transactionFunc(account_data)
+            return transaction_func(account_data)
         # Command accounts
         elif args.command == "accounts":
-            print(accountsFunc(account_data))
+            print(accounts_func(account_data))
     # In case the file does not exist
     except FileNotFoundError:
         logger.critical("File: %s not found.", ACCOUNT_FILE)
