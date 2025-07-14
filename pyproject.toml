@@ -1,0 +1,54 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "src/redleg/__main__.py"
+
+[project]
+dynamic = ['version']
+name = "RedLeg"
+description = "A simple dual entry ledger application"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = ["ledger", "money", "accounting"]
+requires-python = ">= 3.8"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+#    "Development Status :: 4 - Beta",
+#    "Development Status :: 5 - Production/Stable",
+#    "Development Status :: 6 - Mature",
+#    "Development Status :: 7 - Inactive",
+    "Environment :: Console",
+    "Framework :: Hatch",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: File Formats :: JSON",
+    "Topic :: File Formats :: JSON :: JSON Schema",
+    "Topic :: Office/Business",
+    "Topic :: Office/Business :: Financial",
+    "Topic :: Office/Business :: Financial :: Accounting",
+    "Typing :: Typed"
+]
+authors = [
+  {name = "TheCrunching", email = "theCrunching@proton.me"}
+]
+maintainers = [
+  {name = "TheCrunching", email = "theCrunching@proton.me"}
+]
+
+[project.urls]
+Homepage = "https://github.com/TheCrunching/RedLeg"
+Download = "https://github.com/TheCrunching/RedLeg/releases"
+Changelog = "https://github.com/TheCrunching/RedLeg/blob/main/CHANGELOG.md"
+Documentation = "https://github.com/TheCrunching/RedLeg/blob/main/README.md"
+Bug = "https://github.com/TheCrunching/RedLeg/issues"
+repository = "https://github.com/TheCrunching/RedLeg"
+
+[project.scripts]
+redleg = "redleg.__main__:main"
