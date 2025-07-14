@@ -10,21 +10,24 @@ from pathlib import Path
 from datetime import datetime
 
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 # ? Constants
 # The format for the logging msg
 LOGGING_FORMAT = "%(asctime)s [%(levelname)s]: \"%(message)s\""
 # The format for the date in the logging message
-LOGGING_DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
+LOGGING_DATE_FORMAT = "%H:%M:%S"
 # The accepted date format
 DATE_FORMAT = "%d-%m-%Y"
 # Account name pattern
 NAME_PATTERN = re.compile(r"^(Assets|Liabilities|Equity|Revenue|Expenses).")
-# Account file
+# Account dir0
 ACCOUNT_FILE_DIR = Path(Path.home(), ".redleg")
+# Check if dir exists
 if not ACCOUNT_FILE_DIR.exists():
+    # Create it
     ACCOUNT_FILE_DIR.mkdir()
+# Account file
 ACCOUNT_FILE = Path(ACCOUNT_FILE_DIR, "ledger.json")
 
 
