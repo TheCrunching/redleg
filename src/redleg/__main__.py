@@ -10,7 +10,7 @@ from pathlib import Path
 from datetime import datetime
 
 
-__version__ = "0.1.2"
+__version__ = "0.1.3"
 
 # ? Constants
 # The format for the logging msg
@@ -281,13 +281,17 @@ def main() -> int:
         empty_ledger = {
             "transactions": []
         }
-        with open(
-            args.file,
-            mode="x",
-            encoding="utf-8"
-        ) as account_file:
-            json.dump(empty_ledger, account_file)
-        logger.info("Created an empty ledger file")
+        try:
+            with open(
+                args.file,
+                mode="x",
+                encoding="utf-8"
+            ) as account_file:
+                json.dump(empty_ledger, account_file)
+            logger.info("Created an empty ledger file")
+        except FileNotFoundError:  # Only raised if dirs are missing
+            Path(args.file).parent.mkdir(exist_ok=True, parents=True)
+            sys.exit(main())  # Recall main
     # In case a name is missing in the json file
     except KeyboardInterrupt:
         print("\nCtrl+C pressed, quitting...")
