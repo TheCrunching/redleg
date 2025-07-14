@@ -2,12 +2,13 @@
 
 RedLeg is a simple dual entry ledger program.
 
+Join my [discord](https://discord.com/invite/X9SB5Znm2D) if you have any questions.
+
 ## Usage
 
 ```terminal
 $ redleg -h
-usage: RedLeg [-h] [--version] [-v {0,1,2}]
-              {register,transaction,accounts} ...
+usage: RedLeg [-h] [--version] [-v] {register,transaction,accounts} ...
 
 The simple ledger application
 
@@ -20,10 +21,10 @@ positional arguments:
 options:
   -h, --help            show this help message and exit
   --version             Displays the version then exits
-  -v, --verbose {0,1,2}
-                        Increases the verbosity of the logging system
+  -v, --verbose         Increases the verbosity of the logging system
 
 ...
+
 ```
 
 ## Exit codes

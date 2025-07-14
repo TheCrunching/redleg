@@ -18,3 +18,4 @@ This is the changelog for RedLog a simple ledger application.
 _Initial release_
 
 [0.1.0]: https://github.com/TheCrunching/RedLeg/releases/tag/v0.1.0
+[0.1.1]: https://github.com/TheCrunching/RedLeg/releases/tag/v0.1.1
