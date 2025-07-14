@@ -19,14 +19,6 @@ LOGGING_FORMAT = "[%(levelname)s]: \"%(message)s\""
 DATE_FORMAT = "%Y-%m-%d"
 # Account name pattern
 NAME_PATTERN = re.compile(r"^(Assets|Liabilities|Equity|Revenue|Expenses).")
-# Accounting dir
-ACCOUNT_FILE_DIR = Path(Path.home(), ".redleg")
-# Check if dir exists
-if not ACCOUNT_FILE_DIR.exists():
-    # Create it
-    ACCOUNT_FILE_DIR.mkdir()
-# Account file
-ACCOUNT_FILE = Path(ACCOUNT_FILE_DIR, "ledger.json")
 
 
 # Set up argument parser with the program details
@@ -48,6 +40,10 @@ parser.add_argument(
     "--verbose",
     action="count",
     help="Increases the verbosity of the logging system"
+)
+parser.add_argument(
+    "file",
+    help="The ledger file"
 )
 # Set up subparser
 subparsers = parser.add_subparsers(
@@ -168,7 +164,7 @@ def transaction_func(account_data: dict) -> int:
         }
     )
     # Open the file
-    with open(ACCOUNT_FILE, "w", encoding="utf-8") as account_file:
+    with open(args.file, "w", encoding="utf-8") as account_file:
         # Write the json
         json.dump(
             account_data,  # The ledger data
@@ -256,7 +252,7 @@ def main() -> int:
 
     try:
         # Open account file
-        with open(ACCOUNT_FILE, mode="r", encoding="utf-8") as account_file:
+        with open(args.file, mode="r", encoding="utf-8") as account_file:
             # Parse the data
             account_data = json.load(account_file)
         # Command register
@@ -281,12 +277,12 @@ def main() -> int:
                 logger.info("Not saving to file")
     # In case the file does not exist
     except FileNotFoundError:
-        logger.critical("File: %s not found.", ACCOUNT_FILE)
+        logger.critical("File: %s not found.", args.file)
         empty_ledger = {
             "transactions": []
         }
         with open(
-            ACCOUNT_FILE,
+            args.file,
             mode="x",
             encoding="utf-8"
         ) as account_file:
@@ -294,7 +290,7 @@ def main() -> int:
         logger.info("Created an empty ledger file")
     # In case a name is missing in the json file
     except KeyboardInterrupt:
-        print("\nCtrl+C pressed, quiting...")
+        print("\nCtrl+C pressed, quitting...")
         return 3
 
     return 0  # Success
