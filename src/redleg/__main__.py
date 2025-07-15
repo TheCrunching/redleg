@@ -300,6 +300,8 @@ def main() -> int:
     except KeyboardInterrupt:
         print("\nCtrl+C pressed, quitting...")
         return 3
+    except KeyError as e:
+        logger.error("Key: '%s' was missing from ledger file.", e)
 
     return 0  # Success
 
