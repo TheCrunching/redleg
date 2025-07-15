@@ -239,6 +239,10 @@ def statement_func(period: str, account_data: dict) -> str:
                     accounts[account] = amount
                 statement += f"\t{account}: {amount}\n"
 
+    if statement == "":
+        logger.warning("Period had no transactions, not generating a statement")
+        sys.exit(1)
+
     statement += "\n\n"
     statement += "=====END=====\n"
     for account, amount in accounts.items():
@@ -308,7 +312,7 @@ def main() -> int:
             sys.exit(main())  # Recall main
     # In case a name is missing in the json file
     except KeyboardInterrupt:
-        print("\nCtrl+C pressed, quitting...")
+        logger.error("\nCtrl+C pressed, quitting...")
         return 3
     # In case they tamper with the ledger file and we get a key error
     except KeyError as e:
