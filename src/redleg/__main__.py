@@ -14,7 +14,7 @@ __version__ = "0.1.3"
 
 # ? Constants
 # The format for the logging msg
-LOGGING_FORMAT = "[%(levelname)s]: \"%(message)s\""
+LOGGING_FORMAT = "[%(levelname)s]: %(message)s"
 # The accepted date format
 DATE_FORMAT = "%Y-%m-%d"
 # Account name pattern
@@ -206,14 +206,18 @@ def accounts_func(account_data: dict) -> str:
 
 
 def statement_func(period, account_data: str) -> str:
+    """Generates a statement"""
     try:
         # Sett if date adheres to the date format
         datetime.strptime(period, "%Y-%m")
     except ValueError:
-        logger.error(
-            "Date does not conform to date format: YY-mm"
+        logger.info(
+            "Date might be a year"
         )
-        return 1
+        try:
+            datetime.strptime(period, "%Y")
+        except ValueError:
+            logger.error("Period does not match: YY-mm or YY")
 
     accounts = {}
     statement = ""
@@ -225,20 +229,15 @@ def statement_func(period, account_data: str) -> str:
             statement += "Accounts:\n"
             for account, amount in transaction['accounts'].items():
                 try:
-                    accounts[account][1] += amount
+                    accounts[account] += amount
                 except KeyError:
-                    accounts[account] = []
-                    accounts[account].append(amount)
-                    accounts[account].append(amount)
+                    accounts[account] = amount
                 statement += f"\t{account}: {amount}\n"
 
     statement += "\n\n"
-    statement += "=====START=====\n"
-    for account, amount in accounts.items():
-        statement += f"\t{account}: {amount[0]}\n"
     statement += "=====END=====\n"
     for account, amount in accounts.items():
-        statement += f"\t{account}: {amount[1]}\n"
+        statement += f"\t{account}: {amount}\n"
 
     return statement
 
@@ -269,7 +268,8 @@ def main() -> int:
             period = input("Please input a period you want to generate a statement for (YY-mm): ")
             statement = statement_func(period, account_data)
             print(statement)
-            if input("Save to file? [y/N]: ") == "Y":
+            save_to_file = input("Save to file? [y/N]: ").lower()
+            if save_to_file == "Y" or save_to_file == "":
                 with open(f"statement-{period}.txt", mode="w", encoding="utf-8") as statement_file:
                     statement_file.write(statement)
                 logger.info("Statement saved successfully")
