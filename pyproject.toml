@@ -42,13 +42,15 @@ maintainers = [
   {name = "TheCrunching", email = "theCrunching@proton.me"}
 ]
 
+# https://packaging.python.org/en/latest/specifications/well-known-project-urls/
 [project.urls]
-Homepage = "https://github.com/TheCrunching/RedLeg"
-Download = "https://github.com/TheCrunching/RedLeg/releases"
-Changelog = "https://github.com/TheCrunching/RedLeg/blob/main/CHANGELOG.md"
-Documentation = "https://github.com/TheCrunching/RedLeg/blob/main/README.md"
-Bug = "https://github.com/TheCrunching/RedLeg/issues"
-repository = "https://github.com/TheCrunching/RedLeg"
+homepage = "https://github.com/TheCrunching/RedLeg"
+source = "https://github.com/TheCrunching/RedLeg/"
+download = "https://github.com/TheCrunching/redleg/releases/tag/v0.1.2"
+changelog = "https://github.com/TheCrunching/RedLeg/blob/main/CHANGELOG.md"
+releasenotes = "https://github.com/TheCrunching/redleg/releases/tag/v0.1.2"
+documentation = "https://github.com/TheCrunching/RedLeg/blob/main/README.md"
+issues = "https://github.com/TheCrunching/RedLeg/issues"
 
 [project.scripts]
 redleg = "redleg.__main__:main"
