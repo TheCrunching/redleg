@@ -2,9 +2,14 @@
 
 This is the changelog for RedLog a simple ledger application.
 
-## [0.1.4] - 2025-07-16
+## [0.1.4] - 2025-07-15
 
-All right its time to starting thinking about a beta release of this project. Once a beta release is here no new features will be added.
+0.1.4 adds some contributing guidelines  and a couple code changes.
+
+### Added
+
+- Added contributing guidelines
+- Added error handling when statement would be empty
 
 ## [0.1.3] - 2025-07-15
 
