@@ -2,6 +2,10 @@
 
 This is the changelog for RedLog a simple ledger application.
 
+## [1.0.0-alpha1] - 2025-07-16
+
+All right its time to release the first major version! But first I want to make sure everything is working  well so we are going to be starting things off with an alpha release.
+
 ## [0.1.4] - 2025-07-15
 
 0.1.4 adds some contributing guidelines  and a couple code changes.
