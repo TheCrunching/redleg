@@ -10,7 +10,7 @@ from pathlib import Path
 from datetime import datetime
 
 
-__version__ = "0.1.3"
+__version__ = "0.1.4"
 
 # ? Constants
 # The format for the logging msg
@@ -141,12 +141,13 @@ def transaction_func(account_data: dict):
         if name in accounts:
             logger.error("You input an account twice")
             sys.exit(1)
-        try:
-            # Get change in value
-            accounts[name] = int(input("Amount: "))
-        except ValueError:
-            logger.error("You inputted a non int as a number.")
-            sys.exit(1)
+        while True:
+            try:
+                accounts[name] = int(input("Amount: "))
+                break
+            except ValueError:
+                logger.error("You inputted a non int as a number.")
+                continue
     assets = 0
     liabilities = 0
     for account, amount in accounts.items():
@@ -209,7 +210,7 @@ def accounts_func(account_data: dict) -> str:
     return accounts
 
 
-def statement_func(period, account_data: str) -> str:
+def statement_func(period: str, account_data: dict) -> str:
     """Generates a statement"""
     try:
         # Sett if date adheres to the date format
@@ -255,9 +256,14 @@ def main() -> int:
 
     try:
         # Open account file
-        with open(args.file, mode="r", encoding="utf-8") as account_file:
-            # Parse the data
-            account_data = json.load(account_file)
+        try:
+            with open(args.file, mode="r", encoding="utf-8") as account_file:
+                # Parse the data
+                account_data = json.load(account_file)
+                if not isinstance(account_data, dict):
+                    raise ValueError("Invalid JSON data")
+        except json.JSONDecodeError as e:
+            raise ValueError("Invalid JSON data") from e
         # Command register
         if args.command == "register":
             print(register_func(account_data))
