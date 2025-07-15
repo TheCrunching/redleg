@@ -106,7 +106,7 @@ def register_func(account_data: dict) -> str:
     return ledger
 
 
-def transaction_func(account_data: dict) -> int:
+def transaction_func(account_data: dict):
     """Adds a new transaction"""
     # Set up accounts dict
     accounts = {}
@@ -119,7 +119,7 @@ def transaction_func(account_data: dict) -> int:
         logger.error(
             "Date does not conform to date format: %s", DATE_FORMAT
         )
-        return 1
+        sys.exit(1)
     description = input("Input transaction description: ")
     get_accounts = True
     while get_accounts:
@@ -132,17 +132,17 @@ def transaction_func(account_data: dict) -> int:
         # Make sure it matches name pattern
         if not NAME_PATTERN.match(name):
             logger.error("Name does not conform to naming conventions")
-            return 1
+            sys.exit(1)
         # Make sure account not already used during this transaction
         if name in accounts:
             logger.error("You input an account twice")
-            return 1
+            sys.exit(1)
         try:
             # Get change in value
             accounts[name] = int(input("Amount: "))
         except ValueError:
             logger.error("You inputted a non int as a number.")
-            return 1
+            sys.exit(1)
     assets = 0
     liabilities = 0
     for account, amount in accounts.items():
@@ -154,7 +154,7 @@ def transaction_func(account_data: dict) -> int:
             liabilities += amount
     if assets != liabilities:
         logger.error("The transaction does not balance out.")
-        return 1
+        sys.exit(1)
     # Append the transaction to the ledger
     account_data['transactions'].append(
         {
@@ -259,18 +259,22 @@ def main() -> int:
             print(register_func(account_data))
         # Command transaction
         elif args.command == "transaction":
-            return transaction_func(account_data)
+            transaction_func(account_data)
         # Command accounts
         elif args.command == "accounts":
             print(accounts_func(account_data))
         # Command statement
         elif args.command == "statement":
-            period = input("Please input a period you want to generate a statement for (YY-mm): ")
+            period = input(
+                "Please input a month or a year (YY-mm or YY): "
+            )
             statement = statement_func(period, account_data)
             print(statement)
-            save_to_file = input("Save to file? [y/N]: ").lower()
-            if save_to_file == "Y" or save_to_file == "":
-                with open(f"statement-{period}.txt", mode="w", encoding="utf-8") as statement_file:
+            save_to_file = input("Save to file? [Y/n]: ").lower()
+            if save_to_file in ("y", ""):
+                with open(
+                    f"statement-{period}.txt", mode="w", encoding="utf-8"
+                ) as statement_file:
                     statement_file.write(statement)
                 logger.info("Statement saved successfully")
             else:
