@@ -300,11 +300,14 @@ def main() -> int:
     except KeyboardInterrupt:
         print("\nCtrl+C pressed, quitting...")
         return 3
+    # In case they tamper with the ledger file and we get a key error
     except KeyError as e:
         logger.error("Key: '%s' was missing from ledger file.", e)
 
     return 0  # Success
 
 
+# In case we are executing this script by itself
 if __name__ == "__main__":
+    # Take care of exiting just like in the hatch generated script
     sys.exit(main())
