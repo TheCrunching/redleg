@@ -2,6 +2,15 @@
 
 This is the changelog for RedLog a simple ledger application.
 
+## [0.1.4] - 2025-07-15
+
+0.1.4 adds some contributing guidelines  and a couple code changes.
+
+### Added
+
+- Added contributing guidelines
+- Added error handling when statement would be empty
+
 ## [0.1.3] - 2025-07-15
 
 ### Fixed
