@@ -50,18 +50,22 @@ subparsers = parser.add_subparsers(
     required=True,
     dest="command"  # Put this here so we know what command is called
 )
+# Subparser for register command
 registerCommand = subparsers.add_parser(
     "register",
     help="Prints the register"
 )
+# Subparser for transaction command
 transactionCommand = subparsers.add_parser(
     "transaction",
     help="Make a transaction"
 )
+# Subparser for account command
 accountCommand = subparsers.add_parser(
     "accounts",
     help="Print the value of all accounts"
 )
+# Subparser for statement command
 statementCommand = subparsers.add_parser(
     "statement",
     help="Prints out a statement"
