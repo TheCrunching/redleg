@@ -8,15 +8,18 @@ Join my [discord](https://discord.com/invite/X9SB5Znm2D) if you have any questio
 
 ```terminal
 $ redleg -h
-usage: RedLeg [-h] [--version] [-v] {register,transaction,accounts} ...
+usage: RedLeg [-h] [--version] [-v]
+              file {register,transaction,accounts,statement} ...
 
 The simple ledger application
 
 positional arguments:
-  {register,transaction,accounts}
+  file                  The ledger file
+  {register,transaction,accounts,statement}
     register            Prints the register
     transaction         Make a transaction
     accounts            Print the value of all accounts
+    statement           Prints out a statement
 
 options:
   -h, --help            show this help message and exit
@@ -24,7 +27,6 @@ options:
   -v, --verbose         Increases the verbosity of the logging system
 
 ...
-
 ```
 
 ## Exit codes
@@ -42,6 +44,3 @@ options:
 
 The reasoning behind this is that you might record a transaction a day or two after it happens
 
-### What is the date format?
-
-YY-mm-dd
