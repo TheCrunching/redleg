@@ -11,6 +11,12 @@ This is the changelog for RedLog a simple ledger application.
 ### Changed
 
 - Statements can be generated for years and months now
+- Now give bug support back to version 3.4 of python
+
+### Added
+
+- Added a security policy
+- Added a  code of conduct
 
 ## [0.1.2] - 2025-07-14
 
