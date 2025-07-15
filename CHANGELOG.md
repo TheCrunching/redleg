@@ -8,6 +8,10 @@ This is the changelog for RedLog a simple ledger application.
 
 - Fixed bug where it would still fail if the path to the file was missing even after trying to create the file
 
+### Changed
+
+- Statements can be generated for years and months now
+
 ## [0.1.2] - 2025-07-14
 
 ### Added
