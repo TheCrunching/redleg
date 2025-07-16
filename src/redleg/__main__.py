@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Simple ledger application"""
 
+import io
 import re
 import sys
 import json
@@ -10,7 +11,7 @@ from pathlib import Path
 from datetime import datetime
 
 
-__version__ = "1.0.0-alpha1"
+__version__ = "1.0.0-beta1"
 
 # ? Constants
 # The format for the logging msg
@@ -106,7 +107,7 @@ class LedgerFile:
             self.open_file()
         # In case the file does not exist
         except FileNotFoundError:
-            logger.critical(
+            logger.error(
                 "File: %s not found. Attempting to create an empty ledger",
                 args.file
             )
@@ -114,7 +115,7 @@ class LedgerFile:
                 self.create()
                 self.open_file()
             except FileNotFoundError:  # Only raised if dirs are missing
-                logger.critical(
+                logger.error(
                     "Directory's in the path to the file were missing."
                 )
                 sys.exit(1)
@@ -123,7 +124,7 @@ class LedgerFile:
 
     def __exit__(self, exc_type, exc_value, traceback):
         if self.file:
-            self.file.close()
+            self.close()
         if exc_type is not None:
             logger.error("%s: %s", exc_type, traceback)
 
@@ -152,6 +153,9 @@ class LedgerFile:
 
         logger.debug("Opening ledger file %s", self.filename)
         try:
+            # My linter say I should open this with a with statement
+            # Not gonna do that though because the class is already 
+            # Gonna be run within a with statment
             self.file = open(
                 file=self.filename,
                 mode=self.mode,
@@ -159,7 +163,7 @@ class LedgerFile:
             )
         except ValueError as e:
             logger.critical(
-                "Invalid  mode '%s' passed to LedgerFile.open_file()",
+                "Invalid mode '%s' passed to LedgerFile.open_file()",
                 e
             )
 
@@ -178,7 +182,7 @@ class LedgerFile:
 
         if isinstance(self.account_data, dict):
             return self.account_data
-        logger.error("Ledger file seems to be corrupted")
+        logger.critical("Ledger file seems to be corrupted")
         sys.exit(1)
 
     def write(self, data: dict) -> dict:
@@ -188,16 +192,28 @@ class LedgerFile:
         if isinstance(data, dict):
             self.account_data = data
         else:
-            logger.error("Non dict passed to LedgerFile.modify()")
+            logger.critical("Non dict passed to LedgerFile.modify()")
             sys.exit(1)
 
-        json.dump(
-            self.account_data,
-            self.file,
-            indent=4
-        )
+        try:
+            json.dump(
+                self.account_data,
+                self.file,
+                indent=4
+            )
+        except io.UnsupportedOperation:
+            logger.error("Tried to right file in read only mode")
+            sys.exit(1)
 
         return self.account_data
+
+    def close(self):
+        """Closes the file
+        """
+
+        if not self.file:  # Check if file is open
+            self.file.close()
+            self.file = None
 
 
 def register_func(account_data: dict) -> str:
@@ -246,22 +262,20 @@ def transaction_func(account_data: dict):
             sys.exit(1)
         # Make sure account not already used during this transaction
         if name in accounts:
-            logger.error("You input an account twice")
+            logger.error("You have input an account twice")
             sys.exit(1)
         while True:
             try:
                 accounts[name] = int(input("Amount: "))
                 break
             except ValueError:
-                logger.error("You inputted a non int as a number.")
+                logger.warning("You inputted a non int as a number.")
                 continue
     assets = 0
     liabilities = 0
     for account, amount in accounts.items():
-        if re.compile(r"^Assets.").match(account):
+        if re.compile(r"^(Assets|Expenses).").match(account):
             assets += amount
-        elif re.compile(r"^Expenses.").match(account):
-            liabilities -= amount
         else:
             liabilities += amount
     if assets != liabilities:
@@ -318,9 +332,7 @@ def statement_func(period: str, account_data: dict) -> str:
         # Sett if date adheres to the date format
         datetime.strptime(period, "%Y-%m")
     except ValueError:
-        logger.info(
-            "Date might be a year"
-        )
+        logger.info("Date might be a year")
         try:
             datetime.strptime(period, "%Y")
         except ValueError:
@@ -396,7 +408,7 @@ def main() -> int:
         return 3221225786  # Ctrl+c exit code
     # In case they tamper with the ledger file and we get a key error
     except KeyError as e:
-        logger.error("Key: '%s' was missing from ledger file.", e)
+        logger.critical("Key: '%s' was missing from ledger file.", e)
         return 1  # Error
 
     return 0  # Success

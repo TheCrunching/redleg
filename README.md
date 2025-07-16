@@ -32,7 +32,7 @@ options:
 
 | Code       | Meaning        |
 |------------|----------------|
-| 0          | Successful     |
+| 0          | Success        |
 | 1          | Error          |
 | 2          | Argparse error |
 | 3221225786 | Ctrl+C         |
