@@ -1,5 +1,7 @@
 # Security
 
+***IMPORTANT*** read this [security advisory](https://github.com/TheCrunching/redleg/security/advisories/GHSA-qp43-rxw6-x5m9) before downloading redleg.
+
 I take the security of my project very seriously and provide below the security policy for this  repository.
 
 ## Versions
