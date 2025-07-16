@@ -15,25 +15,24 @@ license-files = ["LICENSE"]
 keywords = ["ledger", "money", "accounting"]
 requires-python = ">= 3.9"
 classifiers = [
-    "Development Status :: 3 - Alpha",
-#    "Development Status :: 4 - Beta",
+    "Development Status :: 4 - Beta",
 #    "Development Status :: 5 - Production/Stable",
 #    "Development Status :: 6 - Mature",
 #    "Development Status :: 7 - Inactive",
-    "Environment :: Console",
-    "Framework :: Hatch",
-    "License :: OSI Approved :: MIT License",
-    "Natural Language :: English",
-    "Operating System :: OS Independent",
-    "Programming Language :: Python",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3 :: Only",
-    "Topic :: File Formats :: JSON",
-    "Topic :: File Formats :: JSON :: JSON Schema",
-    "Topic :: Office/Business",
-    "Topic :: Office/Business :: Financial",
-    "Topic :: Office/Business :: Financial :: Accounting",
-    "Typing :: Typed"
+  "Environment :: Console",
+  "Framework :: Hatch",
+  "License :: OSI Approved :: MIT License",
+  "Natural Language :: English",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Topic :: File Formats :: JSON",
+  "Topic :: File Formats :: JSON :: JSON Schema",
+  "Topic :: Office/Business",
+  "Topic :: Office/Business :: Financial",
+  "Topic :: Office/Business :: Financial :: Accounting",
+  "Typing :: Typed"
 ]
 authors = [
   {name = "TheCrunching", email = "theCrunching@proton.me"}
@@ -48,7 +47,7 @@ homepage = "https://github.com/TheCrunching/RedLeg"
 source = "https://github.com/TheCrunching/RedLeg/"
 download = "https://github.com/TheCrunching/redleg/releases/tag/v0.1.2"
 changelog = "https://github.com/TheCrunching/RedLeg/blob/main/CHANGELOG.md"
-releasenotes = "https://github.com/TheCrunching/redleg/releases/tag/v1.0.0-alpha1"
+releasenotes = "https://github.com/TheCrunching/redleg/releases/tag/v1.0.0-beta1"
 documentation = "https://github.com/TheCrunching/RedLeg/blob/main/README.md"
 issues = "https://github.com/TheCrunching/RedLeg/issues"
 
