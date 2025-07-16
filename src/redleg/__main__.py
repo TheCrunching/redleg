@@ -266,10 +266,8 @@ def transaction_func(account_data: dict):
     assets = 0
     liabilities = 0
     for account, amount in accounts.items():
-        if re.compile(r"^Assets.").match(account):
+        if re.compile(r"^(Assets|Expenses).").match(account):
             assets += amount
-        elif re.compile(r"^Expenses.").match(account):
-            liabilities -= amount
         else:
             liabilities += amount
     if assets != liabilities:
