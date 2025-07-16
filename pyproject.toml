@@ -46,7 +46,7 @@ homepage = "https://github.com/TheCrunching/RedLeg"
 source = "https://github.com/TheCrunching/RedLeg/"
 download = "https://github.com/TheCrunching/redleg/releases/tag/v0.1.2"
 changelog = "https://github.com/TheCrunching/RedLeg/blob/main/CHANGELOG.md"
-releasenotes = "https://github.com/TheCrunching/redleg/releases/tag/v1.0.0-beta1"
+releasenotes = "https://github.com/TheCrunching/redleg/compare/v0.1.4...v1.0.0"
 documentation = "https://github.com/TheCrunching/RedLeg/blob/main/README.md"
 issues = "https://github.com/TheCrunching/RedLeg/issues"
 
