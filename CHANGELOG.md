@@ -2,6 +2,10 @@
 
 This is the changelog for RedLog a simple ledger application.
 
+## [1.0.0] - 2025-07-16
+
+No major bugs were found in [1.0.0-rc1](#100-rc1---2025-07-16) so it became version [1.0.0]
+
 ## [1.0.0-rc1] - 2025-07-16
 
 If no major bugs are found in this release this will become version 1.0.0
@@ -100,3 +104,4 @@ _Initial release_
 [1.0.0-alpha1]: https://github.com/TheCrunching/RedLeg/releases/tag/v1.0.0-alpha1
 [1.0.0-beta1]: https://github.com/TheCrunching/RedLeg/releases/tag/v1.0.0-beta1
 [1.0.0-rc1]: https://github.com/TheCrunching/RedLeg/releases/tag/v1.0.0-rc1
+[1.0.0]: https://github.com/TheCrunching/RedLeg/releases/tag/v1.0.0
