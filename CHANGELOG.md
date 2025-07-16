@@ -2,7 +2,7 @@
 
 This is the changelog for RedLog a simple ledger application.
 
-## [1.1.0-dev0] - 2025-07-17
+## [1.1.0-dev0] - 2025-07-16
 
 Okay, its time to start thinking about implementing curses into this  project to make it more interactive. The first step for that is to put the current code into a separate "UI" class. If I do this it will be very easy to implement a TUI or a GUI.
 
