@@ -15,22 +15,35 @@ license-files = ["LICENSE"]
 keywords = ["ledger", "money", "accounting"]
 requires-python = ">= 3.9"
 classifiers = [
-    "Development Status :: 5 - Production/Stable",
-#    "Development Status :: 6 - Mature",
-#    "Development Status :: 7 - Inactive",
+  "Development Status :: 5 - Production/Stable",
   "Environment :: Console",
+  "Environment :: Console :: Curses",
   "Framework :: Hatch",
+  "Intended Audience :: End Users/Desktop",
+  "Intended Audience :: Financial and Insurance Industry",
   "License :: OSI Approved :: MIT License",
   "Natural Language :: English",
   "Operating System :: OS Independent",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: 3.15",
+  "Programming Language :: Unix Shell",
+  "Topic :: Education",
+  "Topic :: File Formats",
   "Topic :: File Formats :: JSON",
   "Topic :: File Formats :: JSON :: JSON Schema",
   "Topic :: Office/Business",
   "Topic :: Office/Business :: Financial",
   "Topic :: Office/Business :: Financial :: Accounting",
+  "Topic :: Security",
+  "Topic :: Security :: Cryptography",
   "Typing :: Typed"
 ]
 authors = [
@@ -52,3 +65,5 @@ issues = "https://github.com/TheCrunching/RedLeg/issues"
 
 [project.scripts]
 redleg = "redleg.__main__:main"
+redleg-tui = "redleg.__main__:tui"
+#redleg-gui = "redleg.__main__:gui"
