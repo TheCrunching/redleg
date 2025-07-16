@@ -11,7 +11,7 @@ from pathlib import Path
 from datetime import datetime
 
 
-__version__ = "1.0.0-rc1"
+__version__ = "1.0.0"
 
 # ? Constants
 # The format for the logging msg
