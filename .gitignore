@@ -2,3 +2,4 @@
 .markdownlint.yaml
 venv
 ledger.json
+.pypirc
