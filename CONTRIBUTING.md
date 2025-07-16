@@ -12,11 +12,12 @@ Ooh you have a new feature  idea? Well depending on where we are in the update c
 
 Below is a table that shows when new features are allowed.
 
-| Update cycle     | Commits                                   |
-|------------------|-------------------------------------------|
-| alpha            | Features can be removed added and changed |
-| Beta             | Features can be added and changed         |
-| Release candidate| Only bug fixes                            |
+| Update cycle       | Commits                                   |
+|---------- ---------|-------------------------------------------|
+| dev                | Features can be removed added and changed |
+| alpha              | Features can be added and changed         |
+| beta               | Features can be changed                   |
+| Release  candidate | Only bug fixes                            |
 
 When proposing a new feature fork the repository and implement your feature, after this you can create a pull request and explain what your feature does and how it fits into the project, after some discussion the pull request will either be accepted or rejected.
 
