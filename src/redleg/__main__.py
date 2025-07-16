@@ -154,7 +154,7 @@ class LedgerFile:
         try:
             # My linter say I should open this with a with statement
             # Not gonna do that though because the class is already
-            # Gonna be run within a with statment
+            # Gonna be run within a with statement
             self.file = open(
                 file=self.filename,
                 mode=self.mode,
