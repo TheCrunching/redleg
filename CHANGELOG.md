@@ -16,6 +16,10 @@ Since no major bugs where found in [1.0.0-alpha1](#100-alpha1---2025-07-15) it b
 - Changed date for [1.0.0-alpha1](#100-alpha1---2025-07-15) it said the 16th even though it was released the 15
 - Removed subtracting expenses from liability side of equation and now add it to asset side of equation to reduce code size
 
+### Fixed
+
+- Made it so when you import redleg and run LedgerFile in read mode and try to right it shows an error instead of an exception
+
 ## [1.0.0-alpha1] - 2025-07-15
 
 All right its time to release the first major version! But first I want to make sure everything is working well so we are going to be starting things off with an alpha release.
