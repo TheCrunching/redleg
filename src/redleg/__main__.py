@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Simple ledger application"""
 
+import io
 import re
 import sys
 import json
@@ -152,6 +153,9 @@ class LedgerFile:
 
         logger.debug("Opening ledger file %s", self.filename)
         try:
+            # My linter say I should open this with a with statement
+            # Not gonna do that though because the class is already 
+            # Gonna be run within a with statment
             self.file = open(
                 file=self.filename,
                 mode=self.mode,
@@ -159,7 +163,7 @@ class LedgerFile:
             )
         except ValueError as e:
             logger.critical(
-                "Invalid  mode '%s' passed to LedgerFile.open_file()",
+                "Invalid mode '%s' passed to LedgerFile.open_file()",
                 e
             )
 
@@ -191,11 +195,15 @@ class LedgerFile:
             logger.critical("Non dict passed to LedgerFile.modify()")
             sys.exit(1)
 
-        json.dump(
-            self.account_data,
-            self.file,
-            indent=4
-        )
+        try:
+            json.dump(
+                self.account_data,
+                self.file,
+                indent=4
+            )
+        except io.UnsupportedOperation:
+            logger.error("Tried to right file in read only mode")
+            sys.exit(1)
 
         return self.account_data
 
