@@ -2,6 +2,15 @@
 
 This is the changelog for RedLog a simple ledger application.
 
+## [1.1.0-dev0] - 2025-07-17
+
+Okay, its time to start thinking about implementing curses into this  project to make it more interactive. The first step for that is to put the current code into a separate "UI" class. If I do this it will be very easy to implement a TUI or a GUI.
+
+### Changed
+
+- Moved UI code into separate file
+- Moved ledger code into separate file
+
 ## [1.0.0] - 2025-07-16
 
 No major bugs were found in [1.0.0-rc1](#100-rc1---2025-07-16) so it became version [1.0.0]
@@ -105,3 +114,4 @@ _Initial release_
 [1.0.0-beta1]: https://github.com/TheCrunching/RedLeg/releases/tag/v1.0.0-beta1
 [1.0.0-rc1]: https://github.com/TheCrunching/RedLeg/releases/tag/v1.0.0-rc1
 [1.0.0]: https://github.com/TheCrunching/RedLeg/releases/tag/v1.0.0
+[1.1.0-dev0]: https://github.com/TheCrunching/RedLeg/releases/tag/v1.1.0-dev0
