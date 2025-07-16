@@ -2,9 +2,27 @@
 
 This is the changelog for RedLog a simple ledger application.
 
+## [1.0.0-alpha1] - 2025-07-16
+
+All right its time to release the first major version! But first I want to make sure everything is working well so we are going to be starting things off with an alpha release.
+
+### Changed
+
+- Moved ledger file code into its own class
+- If ledger file empty create a blank ledger
+- Changed Ctrl+c exit code [Exit codes](https://www.febooti.com/products/automation-workshop/online-help/actions/run-cmd-command/exit-codes/)
+
+### Removed
+
+- Removed verbosity argument
+
+### Fixed
+
+- Now when empty ledger created the json is indented 4 spaces
+
 ## [0.1.4] - 2025-07-15
 
-0.1.4 adds some contributing guidelines  and a couple code changes.
+0.1.4 adds some contributing guidelines and a couple code changes.
 
 ### Added
 
@@ -25,7 +43,7 @@ This is the changelog for RedLog a simple ledger application.
 ### Added
 
 - Added a security policy
-- Added a  code of conduct
+- Added a code of conduct
 
 ## [0.1.2] - 2025-07-14
 
@@ -57,3 +75,4 @@ _Initial release_
 [0.1.2]: https://github.com/TheCrunching/RedLeg/releases/tag/v0.1.2
 [0.1.3]: https://github.com/TheCrunching/RedLeg/releases/tag/v0.1.3
 [0.1.4]: https://github.com/TheCrunching/RedLeg/releases/tag/v0.1.4
+[1.0.0-alpha1]: https://github.com/TheCrunching/RedLeg/releases/tag/v1.0.0-alpha1

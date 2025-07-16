@@ -8,7 +8,7 @@ Join my [discord](https://discord.com/invite/X9SB5Znm2D) if you have any questio
 
 ```terminal
 $ redleg -h
-usage: RedLeg [-h] [--version] [-v]
+usage: RedLeg [-h] [--version]
               file {register,transaction,accounts,statement} ...
 
 The simple ledger application
@@ -24,23 +24,21 @@ positional arguments:
 options:
   -h, --help            show this help message and exit
   --version             Displays the version then exits
-  -v, --verbose         Increases the verbosity of the logging system
 
 ...
 ```
 
 ## Exit codes
 
-| Code | Meaning |
-|------|---------|
-| 0    | Successful |
-| 1    | Error |
-| 2    | Argparse error |
-| 3    | Ctrl+C |
+| Code       | Meaning        |
+|------------|----------------|
+| 0          | Successful     |
+| 1          | Error          |
+| 2          | Argparse error |
+| 3221225786 | Ctrl+C         |
 
 ## FAQ
 
 ### Why does it allow me to set the date and not get the date from datetime?
 
 The reasoning behind this is that you might record a transaction a day or two after it happens
-

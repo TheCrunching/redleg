@@ -15,4 +15,4 @@ The following python versions are supported for security updates.
 ## How to report
 
 If you find a security issue(s) with this project **do not** report them with the issue tracker.
-Report them over at our [Security page](https://github.com/TheCrunching/redleg/security) so we can handle it privately.
+You can report them over at our [Security page](https://github.com/TheCrunching/redleg/security) so we can handle it privately.

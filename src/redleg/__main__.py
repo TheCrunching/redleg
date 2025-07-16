@@ -10,7 +10,7 @@ from pathlib import Path
 from datetime import datetime
 
 
-__version__ = "0.1.4"
+__version__ = "1.0.0-alpha1"
 
 # ? Constants
 # The format for the logging msg
@@ -33,13 +33,6 @@ parser.add_argument(
     action="version",  # Make sure argparse knows its for the version
     version=__version__,  # Pass it the version
     help="Displays the version then exits"
-)
-# Verbosity argument
-parser.add_argument(
-    "-v",
-    "--verbose",
-    action="count",
-    help="Increases the verbosity of the logging system"
 )
 parser.add_argument(
     "file",
@@ -71,8 +64,12 @@ statementCommand = subparsers.add_parser(
     help="Prints out a statement"
 )
 
-# Parse the arguments
-args = parser.parse_args()
+# If no arguments are passed
+if len(sys.argv) == 1:  # Set to 1 cause sys.argv[0] is the program name
+    parser.print_help()
+    sys.exit(2)  # Exit 2 cause of argparse error
+else:  # Else parser the  args
+    args = parser.parse_args()
 
 # Get the logger for the module
 logger = logging.getLogger(__name__)
@@ -85,12 +82,122 @@ streamHandler.setFormatter(formatter)
 # Add the handler to logger
 logger.addHandler(streamHandler)
 # Set logging level
-if args.verbose == 0:
-    logger.setLevel(20)  # Info
-elif args.verbose == 1:
-    logger.setLevel(10)  # Debug
+if __debug__:
+    logger.setLevel(logging.DEBUG)
 else:
-    logger.setLevel(0)  # Notset
+    logger.setLevel(logging.info)
+
+
+class LedgerFile:
+    """Handles ledger file access
+    """
+
+    def __init__(self, file: str, mode: str):
+        self.filename = Path(file)
+        self.mode = mode
+        self.file = None
+        self.account_data = None
+
+    def __enter__(self):
+        try:
+            if self.filename.stat().st_size == 0:
+                self.create()
+                logger.warning("Ledger file empty so created a blank ledger")
+            self.open_file()
+        # In case the file does not exist
+        except FileNotFoundError:
+            logger.critical(
+                "File: %s not found. Attempting to create an empty ledger",
+                args.file
+            )
+            try:
+                self.create()
+                self.open_file()
+            except FileNotFoundError:  # Only raised if dirs are missing
+                logger.critical(
+                    "Directory's in the path to the file were missing."
+                )
+                sys.exit(1)
+
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        if self.file:
+            self.file.close()
+        if exc_type is not None:
+            logger.error("%s: %s", exc_type, traceback)
+
+    def create(self):
+        """Creates and empty ledger file
+        """
+        empty_ledger = {
+            "transactions": []
+        }
+        with open(
+            args.file,
+            mode="w",
+            encoding="utf-8"
+        ) as account_file:
+            json.dump(
+                empty_ledger,
+                account_file,
+                indent=4
+            )
+
+        logger.info("Created an empty ledger file")
+
+    def open_file(self):
+        """Open the ledger file
+        """
+
+        logger.debug("Opening ledger file %s", self.filename)
+        try:
+            self.file = open(
+                file=self.filename,
+                mode=self.mode,
+                encoding="utf-8"
+            )
+        except ValueError as e:
+            logger.critical(
+                "Invalid  mode '%s' passed to LedgerFile.open_file()",
+                e
+            )
+
+    def read(self) -> dict:
+        """Reads the ledger file
+
+        Returns:
+            dict: Ledger information
+        """
+
+        try:
+            self.account_data = json.load(self.file)
+        except json.JSONDecodeError:
+            logger.error("Ledger file not a JSON file")
+            sys.exit(1)
+
+        if isinstance(self.account_data, dict):
+            return self.account_data
+        logger.error("Ledger file seems to be corrupted")
+        sys.exit(1)
+
+    def write(self, data: dict) -> dict:
+        """Writes all changes to the ledger file
+        """
+
+        if isinstance(data, dict):
+            self.account_data = data
+        else:
+            logger.error("Non dict passed to LedgerFile.modify()")
+            sys.exit(1)
+
+        json.dump(
+            self.account_data,
+            self.file,
+            indent=4
+        )
+
+        return self.account_data
 
 
 def register_func(account_data: dict) -> str:
@@ -168,14 +275,9 @@ def transaction_func(account_data: dict):
             "accounts": accounts
         }
     )
-    # Open the file
-    with open(args.file, "w", encoding="utf-8") as account_file:
-        # Write the json
-        json.dump(
-            account_data,  # The ledger data
-            account_file,  # The ledger file
-            indent=4  # Indent 4 spaces, nice thing to have
-        )
+    # Write changes to file
+    with LedgerFile(args.file, "w") as ledger_file:
+        ledger_file.write(account_data)
 
 
 def accounts_func(account_data: dict) -> str:
@@ -240,7 +342,9 @@ def statement_func(period: str, account_data: dict) -> str:
                 statement += f"\t{account}: {amount}\n"
 
     if statement == "":
-        logger.warning("Period had no transactions, not generating a statement")
+        logger.warning(
+            "Period had no transactions, not generating a statement"
+        )
         sys.exit(1)
 
     statement += "\n\n"
@@ -259,15 +363,8 @@ def main() -> int:
     """
 
     try:
-        # Open account file
-        try:
-            with open(args.file, mode="r", encoding="utf-8") as account_file:
-                # Parse the data
-                account_data = json.load(account_file)
-                if not isinstance(account_data, dict):
-                    raise ValueError("Invalid JSON data")
-        except json.JSONDecodeError as e:
-            raise ValueError("Invalid JSON data") from e
+        with LedgerFile(args.file, mode="r") as ledger_file:
+            account_data = ledger_file.read()
         # Command register
         if args.command == "register":
             print(register_func(account_data))
@@ -293,30 +390,14 @@ def main() -> int:
                 logger.info("Statement saved successfully")
             else:
                 logger.info("Not saving to file")
-    # In case the file does not exist
-    except FileNotFoundError:
-        logger.critical("File: %s not found.", args.file)
-        empty_ledger = {
-            "transactions": []
-        }
-        try:
-            with open(
-                args.file,
-                mode="x",
-                encoding="utf-8"
-            ) as account_file:
-                json.dump(empty_ledger, account_file)
-            logger.info("Created an empty ledger file")
-        except FileNotFoundError:  # Only raised if dirs are missing
-            Path(args.file).parent.mkdir(exist_ok=True, parents=True)
-            sys.exit(main())  # Recall main
     # In case a name is missing in the json file
     except KeyboardInterrupt:
         logger.error("\nCtrl+C pressed, quitting...")
-        return 3
+        return 3221225786  # Ctrl+c exit code
     # In case they tamper with the ledger file and we get a key error
     except KeyError as e:
         logger.error("Key: '%s' was missing from ledger file.", e)
+        return 1  # Error
 
     return 0  # Success
 
