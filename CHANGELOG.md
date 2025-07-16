@@ -2,7 +2,20 @@
 
 This is the changelog for RedLog a simple ledger application.
 
-## [1.0.0-alpha1] - 2025-07-16
+## [1.0.0-beta1] - 2025-07-16
+
+Since no major bugs where found in [1.0.0-alpha1](#100-alpha1---2025-07-15) it became [1.0.0-beta1].
+
+### Added
+
+- Added a nice script to build the project
+- Added LedgerFile.close() to explicitly close the file
+
+### Changed
+
+- Changed date for [1.0.0-alpha1](#100-alpha1---2025-07-15) it sayed the 16th even though it was released the 15
+
+## [1.0.0-alpha1] - 2025-07-15
 
 All right its time to release the first major version! But first I want to make sure everything is working well so we are going to be starting things off with an alpha release.
 
@@ -76,3 +89,4 @@ _Initial release_
 [0.1.3]: https://github.com/TheCrunching/RedLeg/releases/tag/v0.1.3
 [0.1.4]: https://github.com/TheCrunching/RedLeg/releases/tag/v0.1.4
 [1.0.0-alpha1]: https://github.com/TheCrunching/RedLeg/releases/tag/v1.0.0-alpha1
+[1.0.0-beta1]: https://github.com/TheCrunching/RedLeg/releases/tag/v1.0.0-beta1
