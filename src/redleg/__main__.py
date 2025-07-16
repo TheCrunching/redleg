@@ -11,7 +11,7 @@ from pathlib import Path
 from datetime import datetime
 
 
-__version__ = "1.0.0-beta1"
+__version__ = "1.0.0-rc1"
 
 # ? Constants
 # The format for the logging msg
@@ -123,8 +123,7 @@ class LedgerFile:
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
-        if self.file:
-            self.close()
+        self.close()
         if exc_type is not None:
             logger.error("%s: %s", exc_type, traceback)
 
@@ -154,7 +153,7 @@ class LedgerFile:
         logger.debug("Opening ledger file %s", self.filename)
         try:
             # My linter say I should open this with a with statement
-            # Not gonna do that though because the class is already 
+            # Not gonna do that though because the class is already
             # Gonna be run within a with statment
             self.file = open(
                 file=self.filename,
@@ -176,8 +175,8 @@ class LedgerFile:
 
         try:
             self.account_data = json.load(self.file)
-        except json.JSONDecodeError:
-            logger.error("Ledger file not a JSON file")
+        except json.JSONDecodeError as e:
+            logger.error("Ledger file not a JSON file: '%s'", e)
             sys.exit(1)
 
         if isinstance(self.account_data, dict):
