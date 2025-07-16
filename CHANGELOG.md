@@ -13,7 +13,7 @@ Since no major bugs where found in [1.0.0-alpha1](#100-alpha1---2025-07-15) it b
 
 ### Changed
 
-- Changed date for [1.0.0-alpha1](#100-alpha1---2025-07-15) it sayed the 16th even though it was released the 15
+- Changed date for [1.0.0-alpha1](#100-alpha1---2025-07-15) it said the 16th even though it was released the 15
 
 ## [1.0.0-alpha1] - 2025-07-15
 
