@@ -12,6 +12,12 @@ class UI:
     def __init__(self, file: str):
         self.file = file
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        pass
+
     def command(self, command: str) -> str:
         """Runs the specified command"""
         with LedgerFile(self.file, mode="r") as ledger_file:
@@ -73,9 +79,3 @@ class UI:
                 print("Not saving to file")
         else:
             print(f"Invalid command passed: '{command}'")
-
-    def done(self):
-        """Close the UI"""
-        # Since we did'nt change the UI of the terminal or open a GUI
-        # This can just be a return 1 for success
-        return 1
