@@ -7,7 +7,7 @@ import argparse
 from .ui import UI
 from .tui import TUI
 
-__version__ = "1.1.0-dev1"
+__version__ = "1.1.0-dev2"
 
 # ? Constants
 # The format for the logging msg
