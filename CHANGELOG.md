@@ -2,6 +2,19 @@
 
 This is the changelog for RedLog a simple ledger application.
 
+## [1.1.0-dev1] - 2025-07-18
+
+All right heres the second development release in this dev cycle. This time around I have implemented curses to make a TUI the old TUI is still available as `redleg` and the new TUI is available as `redleg-tui`. The new TUI does not work completely yet though.
+
+### Added
+
+- Added a new TUI with curses
+- Added a make file
+
+### Changed
+
+- Build.sh not only builds the project
+
 ## [1.1.0-dev0] - 2025-07-16
 
 Okay, its time to start thinking about implementing curses into this  project to make it more interactive. The first step for that is to put the current code into a separate "UI" class. If I do this it will be very easy to implement a TUI or a GUI.
@@ -115,3 +128,4 @@ _Initial release_
 [1.0.0-rc1]: https://github.com/TheCrunching/RedLeg/releases/tag/v1.0.0-rc1
 [1.0.0]: https://github.com/TheCrunching/RedLeg/releases/tag/v1.0.0
 [1.1.0-dev0]: https://github.com/TheCrunching/RedLeg/releases/tag/v1.1.0-dev0
+[1.1.0-dev1]: https://github.com/TheCrunching/RedLeg/releases/tag/v1.1.0-dev1
