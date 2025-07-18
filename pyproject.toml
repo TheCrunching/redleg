@@ -65,5 +65,5 @@ issues = "https://github.com/TheCrunching/RedLeg/issues"
 
 [project.scripts]
 redleg = "redleg.__main__:main"
-redleg-tui = "redleg.__main__:tui"
-#redleg-gui = "redleg.__main__:gui"
+redleg-tui = "redleg.__main__:main_tui"
+#redleg-gui = "redleg.__main__:main_gui"
