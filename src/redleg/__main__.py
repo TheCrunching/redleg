@@ -47,29 +47,31 @@ parser.add_argument(
     help="The ledger file"
 )
 
+
 def subparsers():
+    """For the original text ui"""
     # Set up subparser
-    subparsers = parser.add_subparsers(
+    subparser = parser.add_subparsers(
         required=True,
         dest="command"  # Put this here so we know what command is called
     )
     # Subparser for register command
-    subparsers.add_parser(
+    subparser.add_parser(
         "register",
         help="Prints the register"
     )
     # Subparser for transaction command
-    subparsers.add_parser(
+    subparser.add_parser(
         "transaction",
         help="Make a transaction"
     )
     # Subparser for account command
-    subparsers.add_parser(
+    subparser.add_parser(
         "accounts",
         help="Print the value of all accounts"
     )
     # Subparser for statement command
-    subparsers.add_parser(
+    subparser.add_parser(
         "statement",
         help="Prints out a statement"
     )
@@ -89,7 +91,7 @@ def main() -> int:
     """Handles text user interface"""
 
     subparsers()
-    args =parse_args()
+    args = parse_args()
 
     try:
         with UI(args.file) as ui:
@@ -113,6 +115,7 @@ def main_tui() -> int:
         with TUI(args.file) as tui:
             tui.command()
     # In case ctrl+c is pressed
+
     except KeyboardInterrupt:
         logger.error("\nCtrl+C pressed, quitting...")
         return 3221225786  # Ctrl+c exit code
