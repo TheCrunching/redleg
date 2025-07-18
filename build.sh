@@ -4,7 +4,7 @@
 if [[ "$VIRTUAL_ENV" != "" ]]
 then
     # Build and install
-    python3 -m build && pip install .
+    python3 -m build
 else
     echo "Not in virtual environment"
 fi
