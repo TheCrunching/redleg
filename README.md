@@ -4,6 +4,10 @@ RedLeg is a simple dual entry ledger program.
 
 Join my [discord](https://discord.com/invite/X9SB5Znm2D) if you have any questions.
 
+## Install
+
+You can install with `pip install redleg`.
+
 ## Usage
 
 ```terminal
