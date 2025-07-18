@@ -181,10 +181,10 @@ class LedgerCommands:
         try:
             # Set if date adheres to the date format
             datetime.strptime(date, DATE_FORMAT)
-        except ValueError:
+        except ValueError as e:
             raise ValueError(
                 "Date entered does not conform to the date format (YY-mm-dd)"
-            )
+            ) from e
         assets = 0
         liabilities = 0
         for account, amount in accounts.items():
@@ -251,10 +251,10 @@ class LedgerCommands:
         except ValueError:
             try:  # Might be a year
                 datetime.strptime(period, "%Y")
-            except ValueError:
+            except ValueError as e:
                 raise ValueError(
                     "Period does not match: YY-mm or YY"
-                )
+                ) from e
 
         accounts = {}
         statement = ""
