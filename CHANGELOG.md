@@ -1,4 +1,4 @@
-# Changelog
+# Changelog# Changelog
 
 This is the changelog for RedLog a simple ledger application.
 
