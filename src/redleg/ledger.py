@@ -163,7 +163,8 @@ class LedgerCommands:
             ledger += "Accounts: \n"
             # Iterate over the accounts
             for accounts in transaction['accounts']:
-                ledger += f"\t{accounts}: {transaction['accounts'][accounts]}\n"
+                ledger += f"\t{accounts}: {transaction['accounts'][accounts]}"
+                ledger += "\n"
             # Print the transaction
             ledger += "\n"
 
