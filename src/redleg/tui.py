@@ -55,10 +55,9 @@ class Menu():
                 if self.position == len(self.items) - 1:
                     break
                 self.items[self.position][1]()
-
-            elif key == curses.KEY_UP:
+                break
+            if key == curses.KEY_UP:
                 self.navigate(-1)
-
             elif key == curses.KEY_DOWN:
                 self.navigate(1)
 
@@ -73,6 +72,7 @@ class TUI():
     def __init__(self, file):
         self.stdscr = None
         self.file = file
+        self.menu = None
         with LedgerFile(self.file, mode="r") as ledger_file:
             self.account_data = ledger_file.read()
             self.commands = LedgerCommands(self.account_data)
@@ -82,6 +82,13 @@ class TUI():
         curses.noecho()
         curses.cbreak()
         self.stdscr.keypad(True)
+        items = [
+            ("register", self.register_command),
+            ("transaction", self.transaction_command),
+            ("accounts", self.accounts_command),
+            ("statement", self.statement_command)
+        ]
+        self.menu = Menu(items, self.stdscr)
 
         return self
 
@@ -93,22 +100,16 @@ class TUI():
 
     def command(self):
         """Main window function"""
-        items = [
-            ("register", self.register_command),
-            ("transaction", self.transaction_command),
-            ("accounts", self.accounts_command),
-            ("statement", self.statement_command)
-        ]
-
-        menu = Menu(items, self.stdscr)
-        menu.display()
+        self.menu.display()
 
     def register_command(self):
         """Prints all transactions"""
+        self.menu.panel.hide()
         print(self.commands.register_command())
 
     def transaction_command(self):
         """Makes a transaction"""
+        self.menu.panel.hide()
         # Get the date
         date = input("Date (YY-mm-dd): ")
         description = input("Input transaction description: ")
@@ -140,10 +141,12 @@ class TUI():
 
     def accounts_command(self):
         """Prints account balances"""
+        self.menu.panel.hide()
         print(self.commands.account_balance_command())
 
     def statement_command(self):
         """Makes a statement"""
+        self.menu.panel.hide()
         period = input(
             "Please input a month or a year (YY-mm or YY): "
         )
